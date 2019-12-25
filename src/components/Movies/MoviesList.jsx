@@ -11,10 +11,27 @@ export default class MovieList extends Component {
     };
   }
 
-  getMovies = (filters, page, genres) => {
+  getMovies = () => {
+    const { page, filters, genres, getAmountPages } = this.props;
     const { sort_by, year } = filters;
-    const { getAmountPages } = this.props;
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${year}`;
+
+    let genresStr = ''
+    genres.forEach(({ id, checked }) => {
+      if (checked) {
+        if (genresStr.length) {
+          genresStr = `${genresStr},${id}`;
+        } else {
+          genresStr = `${id}`;
+        }
+      }
+    });
+
+    const genresQuery = genresStr ? `&with_genres=${genresStr}` : '';
+    const yearQuery = year ? `&primary_release_year=${year}` : '';
+    const pageQuery = page ? `&page=${page}` : '';
+    const sortQuery = sort_by ? `&sort_by=${sort_by}` : '';
+
+    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU${sortQuery}${pageQuery}${yearQuery}${genresQuery}`;
     fetch(link)
       .then(response => {
         return response.json();
@@ -31,75 +48,29 @@ export default class MovieList extends Component {
   };
 
   componentDidMount() {
-    // const {
-    //   filters: { sort_by }
-    // } = this.props;
-    // const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
-    // fetch(link)
-    //   .then(response => {
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       movies: data.results
-    //     });
-    //   });
-    this.getMovies(this.props.filters, this.props.page);
+    this.getMovies();
   }
-  // componentWillReceiveProps(nextProps) {
-  //   console.log("props", this.props, "nextProps", nextProps);
-  //   if (nextProps.filters.sort_by !== this.props.filters.sort_by) {
-  //     // const {
-  //     //   filters: { sort_by }
-  //     // } = nextProps;
-  //     // const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
-  //     // fetch(link)
-  //     //   .then(response => {
-  //     //     return response.json();
-  //     //   })
-  //     //   .then(data => {
-  //     //     this.setState({
-  //     //       movies: data.results
-  //     //     });
-  //     //   });
-  //     this.getMovies(nextProps);
-  //   }
-  // }
 
   componentDidUpdate(prevProps) {
-    console.log("componentDidUpdate", prevProps.page, this.props.page);
-    if (this.props.filters.sort_by !== prevProps.filters.sort_by) {
-      this.props.onChangePage(1);
-      this.getMovies(this.props.filters, 1);
+    if (
+      this.props.filters.year !== prevProps.filters.year
+      || this.props.page !== prevProps.page
+      || this.props.filters.sort_by !== prevProps.filters.sort_by
+      || this.props.genres !== prevProps.genres
+    ) {
+      this.getMovies();
     }
-
-    if (this.props.page !== prevProps.page) {
-      this.getMovies(this.props.filters, this.props.page);
-    }
-
-    if (this.props.filters.year !== prevProps.filters.year) {
-      this.props.onChangePage(1);
-      this.getMovies(this.props.filters, 1);
-    }
-
-    // if (this.props.genresList !== prevProps.filters.genresList) {
-    //   this.props.onChangeGenres();
-    //   this.props.onChangePage(1);
-    //   this.getMovies(this.props.filters, 1, this.props.queryGenres);
-    // }
   }
 
   render() {
     const { movies } = this.state;
     return (
       <div className="row">
-        {movies.map(movie => {
-          return (
-            <div key={movie.id} className="col-6 mb-4">
-              <MovieItem item={movie} />
-            </div>
-          );
-        })}
+        {movies.map(movie => (
+          <div key={movie.id} className="col-6 mb-4">
+            <MovieItem item={movie} />
+          </div>
+        ))}
       </div>
     );
   }

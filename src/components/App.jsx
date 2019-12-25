@@ -19,7 +19,6 @@ export default class App extends React.Component {
       yearsList: yearsList,
       amountFilms: 0,
       genres: [],
-      genresList: {},
       queryGenres: ""
     };
   }
@@ -30,7 +29,8 @@ export default class App extends React.Component {
       [e.target.name]: e.target.value
     };
     this.setState({
-      filters: newFilters
+      filters: newFilters,
+      page: 1,
     });
   };
 
@@ -50,8 +50,9 @@ export default class App extends React.Component {
     this.setState({
       filters: {
         sort_by: "popularity.desc",
-        year: 0
-      }
+        year: 0,
+        page: 1,
+      },
     });
   };
 
@@ -61,20 +62,26 @@ export default class App extends React.Component {
       .then(response => {
         return response.json();
       })
-      .then(data => {
-        console.log(data);
+      .then(({ genres }) => {
         this.setState({
-          genres: data.genres
+          genres: genres.map(genres => ({ ...genres, checked: false }))
         });
       });
   };
 
-  onChangeGenres = e => {
+  onChangeGenres = ({ target: { id, checked } }) => {
+    const { genres } = this.state;
+
+    const newGenresList = genres.map(genre => genre.id === Number(id) ? ({
+      ...genre,
+      checked: !genre.checked,
+    }) : ({
+      ...genre
+    }));
+
     this.setState({
-      genresList: {
-        ...this.state.genresList,
-        [e.target.id]: e.target.checked
-      }
+      genres: newGenresList,
+      page: 1,
     });
   };
 
@@ -82,17 +89,9 @@ export default class App extends React.Component {
     this.getGenres();
   }
 
-  getQueryGenres = () => {
-    const obj = this.state.genresList;
-    const arr = Object.keys(obj);
-    const result = arr.filter(key => obj[key]).join(",");
-    this.setState({
-      queryGenres: result
-    });
-  };
-
   render() {
     const { filters, page, yearsList, amountFilms, genres } = this.state;
+
     return (
       <div className="container">
         <div className="row mt-4">
@@ -117,6 +116,7 @@ export default class App extends React.Component {
           <div className="col-8">
             <MoviesList
               filters={filters}
+              genres={genres}
               page={page}
               onChangePage={this.onChangePage}
               getAmountPages={this.getAmountPages}

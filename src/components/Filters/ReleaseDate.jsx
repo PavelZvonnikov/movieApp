@@ -15,6 +15,7 @@ export class ReleaseDate extends Component {
           value={year}
           onChange={onChangeFilters}
           array={yearsList}
+          defaultValue="Выберите год"
         />
       </div>
     );
