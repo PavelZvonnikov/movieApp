@@ -2,6 +2,22 @@ body {
   background: #fdfdfd;
 }
 
+.invalid-feedback {
+  display: block;
+}
+
 .my-form-control {
   margin-bottom: 15px;
+}
+
+.pagination-wrapper {
+  margin: 15px 0;
+}
+
+.pagination {
+  margin-bottom: 15px;
+}
+
+.error {
+  border-color: red;
 }

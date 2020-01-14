@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { Select } from "./Select.jsx";
+import Select from "./Select.jsx";
 
 export class SortBy extends Component {
   static propTypes = {
