@@ -14,6 +14,7 @@ export const Pagination = ({ onChangePage, page, amountFilms }) => (
       <button
         type="button"
         className="btn btn-secondary"
+        disabled={page === amountFilms}
         onClick={onChangePage.bind(null, page + 1)}
       >
         Вперед

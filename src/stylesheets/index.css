@@ -21,3 +21,15 @@ body {
 .error {
   border-color: red;
 }
+
+.custom-button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+.custom-button:focus {
+  outline: none;
+}

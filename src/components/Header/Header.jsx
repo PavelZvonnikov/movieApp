@@ -15,7 +15,7 @@ export const Header = ({ user }) => {
             </a>
           </li>
         </ul>
-        {user ? <UserMenu user={user} /> : <Login />}
+        {user ? <UserMenu /> : <Login />}
       </div>
     </nav>
   );

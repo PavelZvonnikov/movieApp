@@ -52,6 +52,12 @@ export default Component =>
     //     });
     // };
 
+    getFavoriteMovies = () => {
+      const queryStringParams = {
+        language: "ru-RU"
+      };
+    };
+
     getMovies = () => {
       const {
         page,
@@ -85,6 +91,7 @@ export default Component =>
         params: queryStringParams
       })
         .then(data => {
+          console.log(data);
           this.setState({
             movies: data.results
           });
