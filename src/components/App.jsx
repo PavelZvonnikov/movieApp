@@ -196,6 +196,8 @@ export default class App extends React.Component {
                   onChangePage={this.onChangePage}
                   getAmountPages={this.getAmountPages}
                   onChangeGenres={this.onChangeGenres}
+                  sessionID={session_id}
+                  user={user}
                 />
               </div>
             </div>

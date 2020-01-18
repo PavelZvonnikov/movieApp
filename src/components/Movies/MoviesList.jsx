@@ -3,11 +3,16 @@ import MovieItem from "./MovieItem";
 import PropTypes from "prop-types";
 import MoviesHOC from "./MoviesHOC";
 
-const MoviesList = ({ movies }) => (
+import { FavoriteFilmsHOC } from '../HOC/FavoriteFilmsHOC';
+
+const MoviesList = ({ movies, favoriteFilms }) => (
   <div className="row">
     {movies.map(movie => (
       <div key={movie.id} className="col-6 mb-4">
-        <MovieItem item={movie} />
+        <MovieItem
+          item={movie}
+          favorite={Boolean(favoriteFilms[movie.id])}
+        />
       </div>
     ))}
   </div>
@@ -21,4 +26,4 @@ MoviesList.propTypes = {
   movies: PropTypes.array.isRequired
 };
 
-export default MoviesHOC(MoviesList);
+export default FavoriteFilmsHOC(MoviesHOC(MoviesList));

@@ -119,6 +119,7 @@ export default Component =>
 
     render() {
       const { movies } = this.state;
-      return <Component movies={movies} />;
+
+      return <Component movies={movies} {...this.props} />;
     }
   };

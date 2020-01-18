@@ -62,6 +62,7 @@ class MovieItem extends React.Component {
 
   render() {
     const { item } = this.props;
+
     const { favorite, watchlist } = this.state;
     return (
       <div className="card" style={{ width: "100%" }}>
@@ -79,7 +80,7 @@ class MovieItem extends React.Component {
             className="custom-button"
             onClick={this.toggleFavorite}
           >
-            <Star favorite={favorite} />
+            <Star favorite={favorite || this.props.favorite} />
           </button>
           <button
             type="button"
