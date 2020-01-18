@@ -11,29 +11,22 @@ class MovieItem extends React.Component {
   };
 
   toggleFavorite = () => {
-    // const { user, session_id, item } = this.props;
-    // const { favorite } = this.state;
-    this.setState(
-      prevState => ({
-        favorite: !prevState.favorite
-      }),
-      () => {
-        const { user, session_id, item } = this.props;
-        const { favorite } = this.state;
-        CallApi.post(`/account/${user.id}/favorite`, {
-          params: {
-            session_id: session_id
-          },
-          body: {
-            media_type: "movie",
-            media_id: item.id,
-            favorite: favorite
-          }
-        }).then(data => {
-          console.log(data);
-        });
+    const { toggleFavoriteFilm, item, user, session_id, favorite } = this.props;
+
+    CallApi.post(`/account/${user.id}/favorite`, {
+      params: {
+        session_id: session_id
+      },
+      body: {
+        media_type: "movie",
+        media_id: item.id,
+        favorite: !favorite
       }
-    );
+    }).then(data => {
+      console.log(data);
+    });
+
+    toggleFavoriteFilm(item.id);
   };
 
   toggleWatchlist = () => {
@@ -61,9 +54,9 @@ class MovieItem extends React.Component {
   };
 
   render() {
-    const { item } = this.props;
+    const { item, favorite } = this.props;
+    const { watchlist } = this.state;
 
-    const { favorite, watchlist } = this.state;
     return (
       <div className="card" style={{ width: "100%" }}>
         <img
@@ -80,7 +73,7 @@ class MovieItem extends React.Component {
             className="custom-button"
             onClick={this.toggleFavorite}
           >
-            <Star favorite={favorite || this.props.favorite} />
+            <Star favorite={favorite} />
           </button>
           <button
             type="button"

@@ -5,13 +5,14 @@ import MoviesHOC from "./MoviesHOC";
 
 import { FavoriteFilmsHOC } from '../HOC/FavoriteFilmsHOC';
 
-const MoviesList = ({ movies, favoriteFilms }) => (
+const MoviesList = ({ movies, favoriteFilms, toggleFavoriteFilm }) => (
   <div className="row">
     {movies.map(movie => (
       <div key={movie.id} className="col-6 mb-4">
         <MovieItem
           item={movie}
           favorite={Boolean(favoriteFilms[movie.id])}
+          toggleFavoriteFilm={toggleFavoriteFilm}
         />
       </div>
     ))}

@@ -13,9 +13,19 @@ export const FavoriteFilmsHOC = Component => (
       };
     }
 
+    toggleFavoriteFilm = filmID => {
+      const { favoriteFilms } = this.state;
+      this.setState({
+        favoriteFilms: {
+          ...favoriteFilms,
+          [filmID]: !favoriteFilms[filmID]
+        }
+      })
+    }
+
     favoriteFilmsCreateObj = filmsList => {
       const resultObj = {};
-      filmsList.forEach(film => resultObj[film.id] = film);
+      filmsList.forEach(film => resultObj[film.id] = true);
       return resultObj;
     }
 
@@ -56,7 +66,11 @@ export const FavoriteFilmsHOC = Component => (
       const { favoriteFilms } = this.state;
 
       return (
-        <Component {...this.props} favoriteFilms={favoriteFilms} />
+        <Component
+          {...this.props}
+          favoriteFilms={favoriteFilms}
+          toggleFavoriteFilm={this.toggleFavoriteFilm}
+        />
       );
     }
   }
