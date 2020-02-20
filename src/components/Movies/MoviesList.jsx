@@ -1,18 +1,29 @@
 import React from "react";
-import MovieItem from "./MovieItem";
 import PropTypes from "prop-types";
-import MoviesHOC from "./MoviesHOC";
 
-import { FavoriteFilmsHOC } from '../HOC/FavoriteFilmsHOC';
+import MovieItem from "./MovieItem";
+import { MoviesHOC } from "../HOC/MoviesHOC";
 
-const MoviesList = ({ movies, favoriteFilms, toggleFavoriteFilm }) => (
+import { FavoriteFilmsHOC } from "../HOC/FavoriteFilmsHOC";
+import { WatchlistHOC } from "../HOC/WatchlistHOC";
+
+const MoviesList = ({
+  movies,
+  favoriteFilms,
+  watchlist,
+  toggleFavorite,
+  toggleWatchlist,
+  ...props
+}) => (
   <div className="row">
     {movies.map(movie => (
       <div key={movie.id} className="col-6 mb-4">
         <MovieItem
           item={movie}
+          inWatchlist={Boolean(watchlist[movie.id])}
           favorite={Boolean(favoriteFilms[movie.id])}
-          toggleFavoriteFilm={toggleFavoriteFilm}
+          toggleFavorite={() => toggleFavorite(movie.id, props.user)}
+          toggleWatchlist={() => toggleWatchlist(movie.id, props.user)}
         />
       </div>
     ))}
@@ -27,4 +38,4 @@ MoviesList.propTypes = {
   movies: PropTypes.array.isRequired
 };
 
-export default FavoriteFilmsHOC(MoviesHOC(MoviesList));
+export default WatchlistHOC(FavoriteFilmsHOC(MoviesHOC(MoviesList)));

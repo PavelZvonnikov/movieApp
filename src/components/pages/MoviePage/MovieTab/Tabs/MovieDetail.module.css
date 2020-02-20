@@ -1,0 +1,9 @@
+.wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  align-content: flex-start;
+}
+
+.item {
+  flex-basis: 0;
+}

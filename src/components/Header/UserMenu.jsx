@@ -6,53 +6,29 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import { CallApi } from "../../api/api";
-import AppContextHOC from "../HOC/AppContextHOC";
+import { UserMenuHOC } from "../HOC/UserMenuHOC";
+import { AppContextHOC } from "../HOC/AppContextHOC";
 
-class UserMenu extends React.Component {
-  state = {
-    dropdownOpen: false
-  };
-  toggleDropdown = () => {
-    this.setState(prevstate => ({
-      dropdownOpen: !prevstate.dropdownOpen
-    }));
-  };
+const UserMenu = ({ user, dropdownOpen, toggleDropdown, handleLogOut }) => (
+  <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+    <DropdownToggle
+      tag="div"
+      onClick={toggleDropdown}
+      data-toggle="dropdown"
+      aria-expanded={dropdownOpen}
+    >
+      <img
+        width="40"
+        className="rounded-circle"
+        src={`https://secure.gravatar.com/avatar/${user.avatar.gravatar.hash}.jpg?s=64"`}
+        alt=""
+        onClick={toggleDropdown}
+      />
+    </DropdownToggle>
+    <DropdownMenu right>
+      <DropdownItem onClick={handleLogOut}>Log out</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+);
 
-  handleLogOut = () => {
-    CallApi.delete("/authentication/session", {
-      body: {
-        session_id: this.props.session_id
-      }
-    }).then(() => {
-      this.props.onLogOut();
-    });
-  };
-
-  render() {
-    const { user } = this.props;
-    return (
-      <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
-        <DropdownToggle
-          tag="div"
-          onClick={this.toggleDropdown}
-          data-toggle="dropdown"
-          aria-expanded={this.state.dropdownOpen}
-        >
-          <img
-            width="40"
-            className="rounded-circle"
-            src={`https://secure.gravatar.com/avatar/${user.avatar.gravatar.hash}.jpg?s=64"`}
-            alt=""
-            onClick={this.toggleDropdown}
-          />
-        </DropdownToggle>
-        <DropdownMenu right>
-          <DropdownItem onClick={this.handleLogOut}>Log out</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    );
-  }
-}
-
-export default AppContextHOC(UserMenu);
+export default AppContextHOC(UserMenuHOC(UserMenu));

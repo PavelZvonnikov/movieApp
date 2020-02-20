@@ -1,6 +1,11 @@
 import React from "react";
+
 import { Modal, ModalBody } from "reactstrap";
+import Cookies from "universal-cookie";
+
 import LoginForm from "./LoginForm";
+
+const cookies = new Cookies();
 
 export class Login extends React.Component {
   constructor() {
@@ -15,6 +20,19 @@ export class Login extends React.Component {
       showModal: !prevState.showModal
     }));
   };
+
+  openModal = () => {
+    const id = cookies.get("session_id");
+    if (!id) {
+      this.setState({
+        showModal: true
+      });
+    }
+  };
+
+  componentDidMount() {
+    this.openModal();
+  }
 
   // sendPromises = () => {
   //   const fetchApi = (url, options = {}) => {

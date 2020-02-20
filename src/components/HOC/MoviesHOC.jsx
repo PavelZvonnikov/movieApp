@@ -2,7 +2,7 @@ import React from "react";
 // import { API_URL, API_KEY_3 } from "../../api/api";
 import { CallApi } from "../../api/api";
 
-export default Component =>
+export const MoviesHOC = Component =>
   class MoviesHOC extends React.Component {
     constructor() {
       super();
@@ -52,12 +52,6 @@ export default Component =>
     //     });
     // };
 
-    getFavoriteMovies = () => {
-      const queryStringParams = {
-        language: "ru-RU"
-      };
-    };
-
     getMovies = () => {
       const {
         page,
@@ -91,7 +85,6 @@ export default Component =>
         params: queryStringParams
       })
         .then(data => {
-          console.log(data);
           this.setState({
             movies: data.results
           });
@@ -119,7 +112,6 @@ export default Component =>
 
     render() {
       const { movies } = this.state;
-
       return <Component movies={movies} {...this.props} />;
     }
   };

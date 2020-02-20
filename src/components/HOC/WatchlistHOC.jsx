@@ -2,45 +2,44 @@ import React from "react";
 
 import { CallApi } from "../../api/api.js";
 
-export const FavoriteFilmsHOC = Component =>
+export const WatchlistHOC = Component =>
   class HOC extends React.Component {
     constructor() {
       super();
 
       this.state = {
         isLoaded: false,
-        favoriteFilms: {}
+        watchlist: {}
       };
     }
 
-    toggleFavoriteFilm = filmID => {
-      const { favoriteFilms } = this.state;
+    toggleWatchlistFilm = filmID => {
+      const { watchlist } = this.state;
       this.setState({
-        favoriteFilms: {
-          ...favoriteFilms,
-          [filmID]: !favoriteFilms[filmID]
+        watchlist: {
+          ...watchlist,
+          [filmID]: !watchlist[filmID]
         }
       });
     };
 
-    toggleFavorite = (id, user) => {
+    toggleWatchlist = (id, user) => {
       const { session_id } = this.props;
-      const { favoriteFilms } = this.state;
-
-      CallApi.post(`/account/${user.id}/favorite`, {
+      const { watchlist } = this.state;
+      CallApi.post(`/account/${user.id}/watchlist`, {
         params: {
           session_id: session_id
         },
         body: {
           media_type: "movie",
           media_id: id,
-          favorite: !favoriteFilms[id]
+          watchlist: !watchlist[id]
         }
       });
-      this.toggleFavoriteFilm(id);
+      this.toggleWatchlistFilm(id);
     };
 
-    favoriteFilmsCreateObj = filmsList => {
+    watchlistFilmsCreateObj = filmsList => {
       const resultObj = {};
       filmsList.forEach(film => (resultObj[film.id] = true));
       return resultObj;
@@ -48,19 +47,19 @@ export const FavoriteFilmsHOC = Component =>
 
     getData = () => {
       const { session_id, user } = this.props;
-      CallApi.get(`/account/${user.id}/favorite/movies`, {
+      CallApi.get(`/account/${user.id}/watchlist/movies`, {
         params: {
           session_id: session_id,
           language: "ru-RU",
           sort_by: "created_at.asc"
         }
       }).then(({ results }) => {
-        const favoriteFilms = this.favoriteFilmsCreateObj(results);
-        this.setState({ favoriteFilms });
+        const watchlist = this.watchlistFilmsCreateObj(results);
+        this.setState({ watchlist });
       });
     };
 
-    getFavoriteFilms = () => {
+    getWatchlist = () => {
       const { isLoaded } = this.state;
       const { user } = this.props;
       if (!isLoaded && user && user.id) {
@@ -72,20 +71,21 @@ export const FavoriteFilmsHOC = Component =>
     };
 
     componentDidMount() {
-      this.getFavoriteFilms();
+      this.getWatchlist();
     }
 
     componentDidUpdate() {
-      this.getFavoriteFilms();
+      this.getWatchlist();
     }
 
     render() {
-      const { favoriteFilms } = this.state;
+      const { watchlist } = this.state;
+
       return (
         <Component
           {...this.props}
-          favoriteFilms={favoriteFilms}
-          toggleFavorite={this.toggleFavorite}
+          watchlist={watchlist}
+          toggleWatchlist={this.toggleWatchlist}
         />
       );
     }

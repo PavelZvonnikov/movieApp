@@ -1,62 +1,20 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Star } from "../Icons/Star";
 import { BookMark } from "../Icons/BookMark";
-import { CallApi } from "../../api/api";
-import AppContextHOC from "../HOC/AppContextHOC";
+import { ToggleList } from "../toggleList/ToggleList";
+import { AppContextHOC } from "../HOC/AppContextHOC";
 
 class MovieItem extends React.Component {
-  state = {
-    favorite: false,
-    watchlist: false
-  };
-
-  toggleFavorite = () => {
-    const { toggleFavoriteFilm, item, user, session_id, favorite } = this.props;
-
-    CallApi.post(`/account/${user.id}/favorite`, {
-      params: {
-        session_id: session_id
-      },
-      body: {
-        media_type: "movie",
-        media_id: item.id,
-        favorite: !favorite
-      }
-    }).then(data => {
-      console.log(data);
-    });
-
-    toggleFavoriteFilm(item.id);
-  };
-
-  toggleWatchlist = () => {
-    this.setState(
-      prevState => ({
-        watchlist: !prevState.watchlist
-      }),
-      () => {
-        const { user, session_id, item } = this.props;
-        const { watchlist } = this.state;
-        CallApi.post(`/account/${user.id}/watchlist`, {
-          params: {
-            session_id: session_id
-          },
-          body: {
-            media_type: "movie",
-            media_id: item.id,
-            watchlist: watchlist
-          }
-        }).then(data => {
-          console.log(data);
-        });
-      }
-    );
-  };
-
   render() {
-    const { item, favorite } = this.props;
-    const { watchlist } = this.state;
-
+    const {
+      item,
+      favorite,
+      inWatchlist,
+      session_id,
+      toggleFavorite,
+      toggleWatchlist
+    } = this.props;
     return (
       <div className="card" style={{ width: "100%" }}>
         <img
@@ -66,22 +24,20 @@ class MovieItem extends React.Component {
           alt=""
         />
         <div className="card-body">
-          <h6 className="card-title">{item.title}</h6>
+          <Link className="card-title" to={`/movie/${item.id}/detail`}>
+            {item.title}
+          </Link>
           <div className="card-text mb-1">Рейтинг: {item.vote_average}</div>
-          <button
-            type="button"
-            className="custom-button"
-            onClick={this.toggleFavorite}
-          >
-            <Star favorite={favorite} />
-          </button>
-          <button
-            type="button"
-            className="custom-button"
-            onClick={this.toggleWatchlist}
-          >
-            <BookMark watchlist={watchlist} />
-          </button>
+          {session_id && (
+            <div className="button-wrapper">
+              <ToggleList handleClick={toggleFavorite}>
+                <Star favorite={favorite} />
+              </ToggleList>
+              <ToggleList handleClick={toggleWatchlist}>
+                <BookMark watchlist={inWatchlist} />
+              </ToggleList>
+            </div>
+          )}
         </div>
       </div>
     );
