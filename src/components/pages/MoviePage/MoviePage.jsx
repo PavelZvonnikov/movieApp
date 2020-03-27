@@ -13,39 +13,6 @@ class MoviePage extends React.Component {
     movie: {}
   };
 
-  // toggleFavorite = () => {
-  //   const { toggleFavoriteFilm, user, session_id, favoriteFilms } = this.props;
-  //   const { movie } = this.state;
-
-  //   CallApi.post(`/account/${user.id}/favorite`, {
-  //     params: {
-  //       session_id: session_id
-  //     },
-  //     body: {
-  //       media_type: "movie",
-  //       media_id: movie.id,
-  //       favorite: !favoriteFilms[movie.id]
-  //     }
-  //   });
-  //   toggleFavoriteFilm(movie.id);
-  // };
-
-  // toggleWatchlist = () => {
-  //   const { toggleWatchlistFilm, user, session_id, watchlist } = this.props;
-  //   const { movie } = this.state;
-  //   CallApi.post(`/account/${user.id}/watchlist`, {
-  //     params: {
-  //       session_id: session_id
-  //     },
-  //     body: {
-  //       media_type: "movie",
-  //       media_id: movie.id,
-  //       watchlist: !watchlist[movie.id]
-  //     }
-  //   });
-  //   toggleWatchlistFilm(movie.id);
-  // };
-
   componentDidMount() {
     CallApi.get(`/movie/${this.props.match.params.id}`, {
       params: {
@@ -83,7 +50,7 @@ class MoviePage extends React.Component {
               />
             </div>
           </div>
-          <div className="col-6">
+          <div className="col-8">
             <div className="description">
               <div className="row align-items-center justify-content-between description__header">
                 <h6 className="col-8 description__name">{movie.title}</h6>
@@ -111,7 +78,7 @@ class MoviePage extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-12">
+          <div className="col-12 mt-4">
             <MovieTab id={this.props.match.params.id} movie={movie} />
           </div>
         </div>

@@ -54,18 +54,18 @@ export default class MoviesPage extends React.Component {
     });
   };
 
-  // getGenres = () => {
-  //   const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
-  //   fetch(link)
-  //     .then(response => {
-  //       return response.json();
-  //     })
-  //     .then(({ genres }) => {
-  //       this.setState({
-  //         genres: genres.map(genres => ({ ...genres, checked: false }))
-  //       });
-  //     });
-  // };
+  clearFilters = () => {
+    this.setState(prevState => {
+      return {
+        filters: {
+          sort_by: "popularity.desc",
+          year: 0
+        },
+        page: 1,
+        genres: prevState.genres.map(genres => ({ ...genres, checked: false }))
+      };
+    });
+  };
 
   getGenres = () => {
     CallApi.get("/genre/movie/list", {
@@ -73,6 +73,7 @@ export default class MoviesPage extends React.Component {
         language: "ru-RU"
       }
     }).then(({ genres }) => {
+      console.log("genres", genres);
       this.setState({
         genres: genres.map(genres => ({ ...genres, checked: false }))
       });

@@ -71,7 +71,7 @@ export default class App extends React.Component {
           }}
         >
           <div className="app-wrapper">
-            <Header user={user} session_id={session_id} />
+            <Header user={user} />
             <Route
               exact
               path="/"

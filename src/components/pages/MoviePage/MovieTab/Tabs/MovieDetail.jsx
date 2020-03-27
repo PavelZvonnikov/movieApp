@@ -7,8 +7,10 @@ export const MovieDetail = ({ movie }) => {
     <Table>
       <tbody>
         <tr>
-          <th scope="row">Статус</th>
-          <td>{movie.status}</td>
+          <th className="border-top-0" scope="row">
+            Статус
+          </th>
+          <td className="border-top-0">{movie.status}</td>
         </tr>
         <tr>
           <th scope="row">Дата выхода</th>

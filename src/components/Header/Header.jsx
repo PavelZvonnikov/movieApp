@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Login } from "./Login/Login";
 import UserMenu from "./UserMenu";
 
-export const Header = ({ user, session_id }) => {
+export const Header = ({ user }) => {
   return (
     <nav className="navbar navbar-dark bg-primary">
       <div className="container">
@@ -15,7 +15,7 @@ export const Header = ({ user, session_id }) => {
             </Link>
           </li>
         </ul>
-        {user ? <UserMenu /> : <Login session_id={session_id} />}
+        {user ? <UserMenu /> : <Login />}
       </div>
     </nav>
   );

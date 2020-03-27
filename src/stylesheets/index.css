@@ -38,3 +38,8 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 32px;
 }
+
+.description__lists {
+  display: flex;
+  justify-content: flex-end;
+}

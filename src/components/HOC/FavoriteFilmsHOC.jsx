@@ -14,13 +14,13 @@ export const FavoriteFilmsHOC = Component =>
     }
 
     toggleFavoriteFilm = filmID => {
-      const { favoriteFilms } = this.state;
-      this.setState({
+      // const { favoriteFilms } = this.state;
+      this.setState(prevState => ({
         favoriteFilms: {
-          ...favoriteFilms,
-          [filmID]: !favoriteFilms[filmID]
+          ...prevState.favoriteFilms,
+          [filmID]: !prevState.favoriteFilms[filmID]
         }
-      });
+      }));
     };
 
     toggleFavorite = (id, user) => {

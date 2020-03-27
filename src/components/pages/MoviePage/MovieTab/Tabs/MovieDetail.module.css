@@ -7,3 +7,7 @@
 .item {
   flex-basis: 0;
 }
+
+.table {
+  border-top: none !important;
+}
